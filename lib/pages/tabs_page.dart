@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TabsPage extends StatelessWidget {
   const TabsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _Paginas(),
-      bottomNavigationBar: _Navegacion(),
+    return ChangeNotifierProvider(
+      create: (context) => _NavegacionModel(),
+      child: const Scaffold(
+        body: _Paginas(),
+        bottomNavigationBar: _Navegacion(),
+      ),
     );
   }
 }
@@ -19,9 +23,12 @@ class _Navegacion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final providerNavegationModel = Provider.of<_NavegacionModel>(context);
+
     return BottomNavigationBar(
-      currentIndex: 0,
-      items: [
+      currentIndex: providerNavegationModel.paginaActual,
+      onTap: (value) => providerNavegationModel.paginaActual = value,
+      items: const [
         BottomNavigationBarItem(
             icon: Icon(Icons.person_outline), label: 'Para ti'),
         BottomNavigationBarItem(icon: Icon(Icons.public), label: 'Encabezados')
@@ -31,14 +38,16 @@ class _Navegacion extends StatelessWidget {
 }
 
 class _Paginas extends StatelessWidget {
-  const _Paginas({
-    super.key,
-  });
+  const _Paginas();
 
   @override
   Widget build(BuildContext context) {
+    final providerNavegacionModel = Provider.of<_NavegacionModel>(context);
+
     return PageView(
-      physics: const BouncingScrollPhysics(),
+      controller: providerNavegacionModel.pageControler,
+      //physics: const BouncingScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         Container(
           color: Colors.red,
@@ -48,5 +57,25 @@ class _Paginas extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class _NavegacionModel with ChangeNotifier {
+  int _paginaActual = 0;
+  PageController _pageController = PageController();
+
+  int get paginaActual {
+    return _paginaActual;
+  }
+
+  set paginaActual(int page) {
+    _paginaActual = page;
+    _pageController.animateToPage(page,
+        duration: Duration(milliseconds: 250), curve: Curves.easeOut);
+    notifyListeners();
+  }
+
+  PageController get pageControler {
+    return _pageController;
   }
 }
