@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:noticiasapp/pages/tabs_page.dart';
+import 'package:noticiasapp/services/news_service.dart';
 import 'package:noticiasapp/theme/theme.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +14,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Noticias',
-      theme: miTema,
-      home: TabsPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => NewsService(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Noticias',
+        theme: miTema,
+        home: TabsPage(),
+      ),
     );
   }
 }
