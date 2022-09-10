@@ -49,8 +49,8 @@ class _Paginas extends StatelessWidget {
 
     return PageView(
       controller: providerNavegacionModel.pageControler,
-      physics: const BouncingScrollPhysics(),
-      //physics: const NeverScrollableScrollPhysics(),
+      //physics: const BouncingScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         Tab1Page(),
         Tab2page(),

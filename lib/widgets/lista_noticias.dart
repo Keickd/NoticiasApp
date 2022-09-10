@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:noticiasapp/theme/theme.dart';
 
-import '../models/news_models.dart';
+import '../models/models.dart';
 
 class ListaNoticias extends StatelessWidget {
-  const ListaNoticias({super.key, required this.noticias});
+  ListaNoticias({super.key, required this.noticias});
 
   final List<Article> noticias;
 
